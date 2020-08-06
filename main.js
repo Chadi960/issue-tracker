@@ -34,11 +34,11 @@ function saveIssue(e) {
 function setStatusClosed(id) {
     var issues = JSON.parse(localStorage.getItem('issues'));
     
-    for (var i = 0; i< issues.length; i++){
-        if (issues[i].id == id){
-            issues[i].status = 'Closed';
+    issues.forEach(issue => {
+        if(issue.id == id){
+            issue.status = 'Closed';
         }
-    }
+    });
 
     localStorage.setItem('issues', JSON.stringify(issues));
     fetchIssues();
@@ -46,15 +46,14 @@ function setStatusClosed(id) {
 
 function deleteIssue(id) {
     var issues = JSON.parse(localStorage.getItem('issues'));
-  
-    for (var i = 0; i < issues.length; i++) {
-      if (issues[i].id == id) {
-        issues.splice(i, 1);
-      }
-    }
+    
+    issues.forEach((issue, i) => {
+        if(issue.id == id){
+            issues.splice(i, 1);
+        }
+    });
   
     localStorage.setItem('issues', JSON.stringify(issues));
-  
     fetchIssues();
   }
 
@@ -71,45 +70,15 @@ function fetchIssues() {
         let assignedTo = issue.assignedTo;
         let status = issue.status;
   
-      issuesList.innerHTML += '<div class="well">'+
-                              '<h6>Issue ID: ' + id + '</h6>'+
-                              '<p><span class="label label-info">' + status + '</span></p>'+
-                              '<h3>' + desc + '</h3>'+
-                              '<p><span class="glyphicon glyphicon-time"></span> ' + severity + '</p>'+
-                              '<p><span class="glyphicon glyphicon-user"></span> ' + assignedTo + '</p>'+
-                              '<a href="#" onclick="setStatusClosed(\''+id+'\')" class="btn btn-warning">Close</a> '+
-                              '<a href="#" onclick="deleteIssue(\''+id+'\')" class="btn btn-danger">Delete</a>'+
-                              '</div>';
-    })
-}
-
-  
-
-
-/*function fetchIssues(){
-    let issues = JSON.parse(localStorage.getItem('issues'));
-    let issuesList = document.getElementById('issuesList');
-
-    issuesList.innerHTML = '';
-
-    if(issues){
-    issues.forEach(issue => {
-        var id = issue.id;
-        let desc = issue.description;
-        let severity = issue.severity;
-        let assignedTo = issue.assignedTo;
-        let status = issue.status;
-    
-        issuesList.innerHTML += `<div class="well">
+      issuesList.innerHTML +=   `<div class="well">
                                  <h6>Issue ID: ${id} </h6>
                                  <p><span class="label label-info"> ${status} </span></p>
                                  <h3>${desc}</h3>
                                  <p><span class="glyphicon glyphicon-time"</span> ${severity}</p>
                                  <p><span class="glyphicon glyphicon-user"</span> ${assignedTo} </p>
-                                 <a href='#' onclick="setStatusClosed(${id})" class="btn btn-warning">Close</a>
-                                 <a href="#"  onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
+                                 <a href='#' onclick="setStatusClosed('${id}')" class="btn btn-warning">Close</a>
+                                 <a href="#"  onclick="deleteIssue('${id}')" class="btn btn-danger">Delete</a>
                                  </div>
                                  `;
-    });
+    })
 }
-}*/
